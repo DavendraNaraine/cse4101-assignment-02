@@ -1,3 +1,4 @@
+#define MAX_NUM_OF_TILES_IN_MAZEFILE 64
 typedef FILE* MazeFile;
 
 MazeFile openMazeFile(char* name){

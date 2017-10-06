@@ -7,25 +7,6 @@ struct maze {
 
 typedef struct maze* Maze;
 
-char* getTilesCharsFromMazeFile(MazeFile mazeFile){
-  int size = 0;
-  char c;
-  char* tilesChars = (char*) malloc(sizeof(char) * MAX_NUM_OF_TILES);
-
-  while ((!feof(mazeFile)) && (size<MAX_NUM_OF_TILES)) {
-    switch (c = fgetc(mazeFile)) {
-      case 'M':
-      case 'E':
-      case 'W':
-      case 'C':
-        size++;
-        tilesChars[size - 1] = c;
-    }
-  }
-
-  return tilesChars;
-}
-
 bool isValidMazeIndex (TileIndex index) {
   return (!(index <  0) && !(index > MAX_NUM_OF_TILES));
 }
@@ -68,16 +49,16 @@ void generateAdjacentTilesForTile(Tile tile, Maze maze) {
 }
 
 Maze createMazeFromMazeFile(MazeFile mazeFile) {
-  char* tilesChars = getTilesCharsFromMazeFile(mazeFile);
+  TileType* tileTypes = getTileTypesFromMazeFile(mazeFile);
   Maze maze = (Maze) malloc(sizeof(struct maze));
   int i;
 
   for (i = 0; i < MAX_NUM_OF_TILES; i++) {
-    // Tile allocation
+    // Tile memory allocation
     maze->tiles[i] = (Tile) malloc(sizeof(struct tile));
 
     // Assign tile defaults: type, index, adjacentTilesSize and adjacentTiles
-    maze->tiles[i]->type = getTileTypeFromChar(tilesChars[i]);
+    maze->tiles[i]->type = tileTypes[i];
     maze->tiles[i]->index = i;
     maze->tiles[i]->adjacentTilesSize = 0;
     maze->tiles[i]->adjacentTiles = (Tile*) malloc(sizeof(Tile) * 0);
@@ -94,7 +75,7 @@ Maze createMazeFromMazeFile(MazeFile mazeFile) {
   }
 
   // Clean up:
-  free(tilesChars);
+  free(tileTypes);
 
   return maze;
 }

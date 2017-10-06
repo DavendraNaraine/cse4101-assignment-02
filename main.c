@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "libs/MazeFile.h"
+#include "libs/TileType.h"
 #include "libs/Tile.h"
 #include "libs/Mouse.h"
 #include "libs/Maze.h"
